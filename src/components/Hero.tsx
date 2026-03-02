@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import {
     motion,
     useScroll,
@@ -9,42 +9,45 @@ import {
     useMotionValue,
 } from "framer-motion";
 import Pallet3D from "./Pallet3D";
-import { useEffect } from "react";
 
 export default function Hero() {
     const containerRef = useRef<HTMLElement>(null);
 
-    // Parallax on scroll
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ["start start", "end start"],
     });
 
-    const yBackground = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
     const yText = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
     const opacityText = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
     const scale3D = useTransform(scrollYProgress, [0, 1], [1, 0.8]);
 
-    // Mouse parallax
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
 
     const springConfig = { damping: 50, stiffness: 400 };
     const parallaxX = useSpring(
-        useTransform(mouseX, [-0.5, 0.5], ["-2%", "2%"]),
+        useTransform(mouseX, [-0.5, 0.5], [-15, 15]),
         springConfig,
     );
     const parallaxY = useSpring(
-        useTransform(mouseY, [-0.5, 0.5], ["-2%", "2%"]),
+        useTransform(mouseY, [-0.5, 0.5], [-15, 15]),
+        springConfig,
+    );
+
+    const parallax3dX = useSpring(
+        useTransform(mouseX, [-0.5, 0.5], [20, -20]),
+        springConfig,
+    );
+    const parallax3dY = useSpring(
+        useTransform(mouseY, [-0.5, 0.5], [20, -20]),
         springConfig,
     );
 
     useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {
-            const x = e.clientX / window.innerWidth - 0.5;
-            const y = e.clientY / window.innerHeight - 0.5;
-            mouseX.set(x);
-            mouseY.set(y);
+            mouseX.set(e.clientX / window.innerWidth - 0.5);
+            mouseY.set(e.clientY / window.innerHeight - 0.5);
         };
         window.addEventListener("mousemove", handleMouseMove);
         return () => window.removeEventListener("mousemove", handleMouseMove);
@@ -57,8 +60,8 @@ export default function Hero() {
         >
             {/* Animated Background */}
             <motion.div
-                style={{ y: yBackground, x: parallaxX, y: parallaxY }}
-                className="absolute inset-0 z-0 opacity-20 bg-[radial-gradient(circle_at_50%_50%,#2563eb,transparent_60%)] scale-110"
+                style={{ x: parallaxX, y: parallaxY }}
+                className="absolute inset-0 z-0 opacity-20 bg-[radial-gradient(circle_at_50%_50%,#2563eb,transparent_60%)] scale-125"
             />
 
             <div className="container mx-auto px-4 z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center h-full pt-20 pb-10">
@@ -128,14 +131,8 @@ export default function Hero() {
                 <motion.div
                     style={{
                         scale: scale3D,
-                        x: useTransform(
-                            parallaxX,
-                            (v) => `-${parseFloat(v as string) * 2}%`,
-                        ),
-                        y: useTransform(
-                            parallaxY,
-                            (v) => `-${parseFloat(v as string) * 2}%`,
-                        ),
+                        x: parallax3dX,
+                        y: parallax3dY,
                     }}
                     className="lg:col-span-7 h-[60vh] lg:h-[85vh] relative z-10 w-full"
                 >

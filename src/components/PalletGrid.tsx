@@ -90,7 +90,7 @@ const cardVariants = {
         scale: 1,
         rotateX: 0,
         transition: { 
-            type: "spring", 
+            type: "spring" as const, 
             stiffness: 100, 
             damping: 15,
             mass: 1
@@ -202,12 +202,12 @@ function PalletCard({ pallet }: { pallet: typeof pallets[0] }) {
                             scale: isHovered ? 1.15 : 1,
                             y: isHovered ? -10 : 0,
                         }}
-                        style={{ translateZ: 50 }}
+                        style={{ transform: "translateZ(50px)" }}
                         transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     />
                 </div>
 
-                <div className="flex-1 flex flex-col relative z-10" style={{ translateZ: 30 }}>
+                <div className="flex-1 flex flex-col relative z-10" style={{ transform: "translateZ(30px)" }}>
                     <motion.div 
                         className="text-2xl font-black text-[#2563eb] mb-2"
                         animate={{ color: isHovered ? "#1d4ed8" : "#2563eb" }}

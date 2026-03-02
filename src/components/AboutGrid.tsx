@@ -15,15 +15,15 @@ const containerVariants = {
 
 const itemVariants = {
     hidden: { opacity: 0, y: 40, scale: 0.95 },
-    visible: { 
-        opacity: 1, 
-        y: 0, 
-        scale: 1, 
-        transition: { 
-            type: "spring", 
-            stiffness: 100, 
-            damping: 20 
-        } 
+    visible: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        transition: {
+            type: "spring" as const,
+            stiffness: 100,
+            damping: 20,
+        },
     },
 };
 
@@ -31,7 +31,7 @@ export default function AboutGrid() {
     return (
         <section className="py-24 px-4 relative z-10 bg-[#0f172a] text-white dark-section overflow-hidden">
             <div className="container mx-auto">
-                <motion.div 
+                <motion.div
                     initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.3 }}
@@ -50,7 +50,7 @@ export default function AboutGrid() {
                 </motion.div>
 
                 {/* Сетка с мягкими углами */}
-                <motion.div 
+                <motion.div
                     variants={containerVariants}
                     initial="hidden"
                     whileInView="visible"
@@ -141,7 +141,7 @@ export default function AboutGrid() {
                         whileHover={{ scale: 0.98, translateY: -5 }}
                         className="md:col-span-7 bg-slate-800 p-8 flex flex-col justify-between group cursor-pointer relative rounded-3xl overflow-hidden"
                     >
-                        <motion.div 
+                        <motion.div
                             className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center mix-blend-overlay"
                             initial={{ scale: 1, opacity: 0.4 }}
                             whileHover={{ scale: 1.1, opacity: 0.5 }}
